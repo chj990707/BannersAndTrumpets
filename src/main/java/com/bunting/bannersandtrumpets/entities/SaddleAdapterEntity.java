@@ -67,7 +67,6 @@ public class SaddleAdapterEntity extends Mob {
                     return;
                 }
                 float f9 = (float)(Mth.atan2(d_Z, d_X) * (double)(180F / (float)Math.PI)) - 90.0F;
-                System.out.println(f9);
                 this.mob.setYRot(this.rotlerp(this.mob.getYRot(), f9, 90.0F));
                 Vec2 planeForward = new Vec2((float)this.mob.getVehicle().getForward().x, (float)this.mob.getVehicle().getForward().z).normalized();
                 this.strafeForwards = (float)(planeForward.x * d_X / Math.sqrt(d_length_squared) + planeForward.y * d_Z / Math.sqrt(d_length_squared));
