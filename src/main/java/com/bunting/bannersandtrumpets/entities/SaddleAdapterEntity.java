@@ -1,5 +1,6 @@
 package com.bunting.bannersandtrumpets.entities;
 
+import com.bunting.bannersandtrumpets.entities.ai.navigation.CustomPathNavigation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
@@ -15,12 +16,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.NodeEvaluator;
 import net.minecraft.world.phys.Vec2;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class SaddleAdapterEntity extends Mob {
     public SaddleAdapterEntity(EntityType<? extends Mob> p_21368_, Level p_21369_) {
         super(p_21368_, p_21369_);
         this.moveControl = new SaddleAdapterMoveControl(this);
+        this.navigation = new CustomPathNavigation(this, this.level);
     }
 
     public void tick(){
@@ -68,9 +71,9 @@ public class SaddleAdapterEntity extends Mob {
                 }
                 float f9 = (float)(Mth.atan2(d_Z, d_X) * (double)(180F / (float)Math.PI)) - 90.0F;
                 this.mob.setYRot(this.rotlerp(this.mob.getYRot(), f9, 90.0F));
-                Vec2 planeForward = new Vec2((float)this.mob.getVehicle().getForward().x, (float)this.mob.getVehicle().getForward().z).normalized();
-                this.strafeForwards = (float)(planeForward.x * d_X / Math.sqrt(d_length_squared) + planeForward.y * d_Z / Math.sqrt(d_length_squared));
-                this.strafeRight = -(float)(planeForward.y * d_X / Math.sqrt(d_length_squared) - planeForward.x * d_Z / Math.sqrt(d_length_squared));
+                Vec3 planeForward = new Vec3(this.mob.getForward().z * d_X - this.mob.getForward().x * d_Z ,0, this.mob.getForward().z * d_Z + this.mob.getForward().x * d_X).normalize();
+                this.strafeForwards = (float)planeForward.z;
+                this.strafeRight = (float)planeForward.x;
                 BlockPos blockpos = this.mob.getVehicle().blockPosition();
                 BlockState blockstate = this.mob.getVehicle().level.getBlockState(blockpos);
                 VoxelShape voxelshape = blockstate.getCollisionShape(this.mob.level, blockpos);
