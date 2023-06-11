@@ -2,10 +2,12 @@ package com.bunting.bannersandtrumpets.entities.ai.navigation;
 
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.core.Vec3i;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 
@@ -20,8 +22,7 @@ public class CustomPathNavigation extends GroundPathNavigation {
     public Path createPath(Entity p_26534_, int p_26535_) {
         prevTargetEntity = p_26534_;
         prevReachRange = p_26535_;
-        if(p_26534_ != null && p_26534_.blockPosition() != null) return super.createPath(p_26534_, p_26535_);
-        else return null;
+        return super.createPath(p_26534_, p_26535_);
     }
 
     protected void followThePath(){
@@ -31,13 +32,13 @@ public class CustomPathNavigation extends GroundPathNavigation {
         double d2 = Math.abs(this.mob.getZ() - ((double)vec3i.getZ() + (this.mob.getBbWidth() + 1) / 2D)); //Forge: Fix MC-94054
         Vec3 nextNodeDirection = new Vec3(d0, d1, d2);
         if(this.mob.getForward().dot(nextNodeDirection) / nextNodeDirection.length() < 0.5){
-            if(this.path.getEndNode() != this.path.getNextNode()){
+            this.path.advance();
+            if(this.path.isDone() && this.prevTargetEntity != null){
+                this.path = createPath(prevTargetEntity, prevReachRange);
                 this.path.advance();
             }
-            else{
-                if(prevTargetEntity != null) this.path = createPath(prevTargetEntity, prevReachRange);
-            }
         }
+        if(this.path.isDone()) return;
         super.followThePath();
     }
 }
