@@ -43,7 +43,6 @@ public class MarauderEntity extends Pillager {
         horse.setTamed(true);
         horse.setAge(0);
         horse.finalizeSpawn(p_33790_,p_33791_,p_33792_,(SpawnGroupData)null, (CompoundTag)null);
-        horse.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35);
         ((ServerLevel)this.level).addFreshEntityWithPassengers(horse);
         horse.equipSaddle(null);
         this.startRiding(horse);
