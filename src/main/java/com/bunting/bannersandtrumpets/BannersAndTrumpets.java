@@ -4,8 +4,6 @@ import com.bunting.bannersandtrumpets.client.renderer.SaddleAdapterEntityRendere
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.PillagerRenderer;
-import net.minecraft.client.renderer.entity.VindicatorRenderer;
-import net.minecraft.world.entity.monster.Vindicator;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
