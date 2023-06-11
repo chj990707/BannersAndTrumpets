@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.entity.monster.Pillager;
 import net.minecraft.world.level.Level;
@@ -24,7 +25,7 @@ public class MarauderEntity extends Pillager {
             return super.startRiding(toRide);
         }
         else{
-            if(this.level instanceof ServerLevel){
+            if(toRide instanceof AbstractHorse && ((AbstractHorse)toRide).isSaddled() && this.level instanceof ServerLevel){
                 SaddleAdapterEntity saddleAdapterEntity = EntityRegistry.SADDLEADAPTERENTITY.get().create(this.level);
                 ((ServerLevel)this.level).addFreshEntityWithPassengers(saddleAdapterEntity);
                 saddleAdapterEntity.startRiding(toRide);
