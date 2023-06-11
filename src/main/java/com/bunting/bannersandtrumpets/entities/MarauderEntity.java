@@ -21,18 +21,14 @@ public class MarauderEntity extends Pillager {
     }
 
     public boolean startRiding(Entity toRide){
-        if(toRide instanceof SaddleAdapterEntity){
-            return super.startRiding(toRide);
+        if (toRide instanceof AbstractHorse && ((AbstractHorse) toRide).isSaddled()){
+            SaddleAdapterEntity saddleAdapterEntity = EntityRegistry.SADDLEADAPTERENTITY.get().create(this.level);
+            ((ServerLevel) this.level).addFreshEntityWithPassengers(saddleAdapterEntity);
+            saddleAdapterEntity.startRiding(toRide);
+            return this.startRiding(saddleAdapterEntity);
         }
         else{
-            if(toRide instanceof AbstractHorse && ((AbstractHorse)toRide).isSaddled() && this.level instanceof ServerLevel){
-                SaddleAdapterEntity saddleAdapterEntity = EntityRegistry.SADDLEADAPTERENTITY.get().create(this.level);
-                ((ServerLevel)this.level).addFreshEntityWithPassengers(saddleAdapterEntity);
-                saddleAdapterEntity.startRiding(toRide);
-                this.startRiding(saddleAdapterEntity);
-                return true;
-            }
-            return false;
+            return super.startRiding(toRide);
         }
     }
 
