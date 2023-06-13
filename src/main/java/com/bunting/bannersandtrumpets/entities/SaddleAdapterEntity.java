@@ -1,10 +1,13 @@
 package com.bunting.bannersandtrumpets.entities;
 
+import com.bunting.bannersandtrumpets.EntityRegistry;
 import com.bunting.bannersandtrumpets.entities.ai.navigation.CustomPathNavigation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -39,6 +42,13 @@ public class SaddleAdapterEntity extends Mob {
         return this.moveControl;
     }
 
+    public static boolean startRidingWithAdapter(Entity rider, Entity vehicle){
+        SaddleAdapterEntity saddleAdapterEntity = EntityRegistry.SADDLEADAPTERENTITY.get().create(rider.level);
+        ((ServerLevel)rider.level).addFreshEntityWithPassengers(saddleAdapterEntity);
+        saddleAdapterEntity.startRiding(vehicle);
+        return rider.startRiding(saddleAdapterEntity);
+    }
+
     public class SaddleAdapterMoveControl extends MoveControl {
 
         public SaddleAdapterMoveControl(Mob p_24983_) {
@@ -58,7 +68,7 @@ public class SaddleAdapterEntity extends Mob {
         }
 
         public void tick(){
-            if(this.operation == Operation.MOVE_TO){
+            if(this.operation == Operation.MOVE_TO && this.mob.getVehicle() != null){
                 double d_X = this.wantedX - this.mob.getX();
                 double d_Z = this.wantedZ - this.mob.getZ();
                 double d_Y = this.wantedY - this.mob.getY();
