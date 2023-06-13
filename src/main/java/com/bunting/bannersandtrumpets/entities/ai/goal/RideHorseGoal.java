@@ -38,7 +38,7 @@ public class RideHorseGoal<T extends Mob&ISaddledHorseRider> extends Goal {
             if(tempHorse == null){
                 break;
             }
-            else if(!tempHorse.hasPassenger((entity)-> entity != null) && tempHorse.isTamed() && tempHorse.getAge() >= 0){
+            else if(!tempHorse.hasPassenger((entity)-> entity != null) && tempHorse.isTamed() && !tempHorse.isBaby()){
                 Path path = this.pathNav.createPath(tempHorse, 0);
                 if(path != null){
                     if(path.getEndNode().asBlockPos().equals(tempHorse.blockPosition())) {
