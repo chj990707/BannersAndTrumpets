@@ -74,6 +74,7 @@ public class RideHorseGoal<T extends Mob&ISaddledHorseRider> extends Goal {
         if(this.horse != null && !horse.hasPassenger((entity)-> entity != null)){
             this.mob.getLookControl().setLookAt(this.horse, 30.0F, 30.0F);
             if(this.mob.distanceToSqr(horse) <= 2.0){
+                if(horse.isLeashed()) horse.dropLeash(true, true);
                 if(!horse.isSaddled()) horse.equipSaddle(this.mob.getSoundSource());
                 this.mob.startRiding(horse);
                 System.out.println(this.mob.position());
